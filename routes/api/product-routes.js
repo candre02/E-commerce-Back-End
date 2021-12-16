@@ -1,4 +1,5 @@
 const router = require('express').Router();
+const sequelize = require('../../config/connection')
 const { Product, Category, Tag, ProductTag } = require('../../models');
 
 // The `/api/products` endpoint
@@ -14,7 +15,7 @@ router.get('/', (req, res) => {
       'price',
       'stock',
       'category_id',
-      []
+      [sequelize.literal('(SELECT ')]
     ],
     include: [
       {
@@ -31,7 +32,7 @@ router.get('/', (req, res) => {
       }
     ]
   })
-    .then(productData => res.json(productData))
+    .then(allProduct => res.json(allProduct))
     .catch(err => {
       console.log(err);
       res.status(500).json(err);
@@ -69,12 +70,12 @@ router.get('/:id', (req, res) => {
       }
     ]
   })
-    .then(productData => {
-      if (!productData) {
+    .then(oneProduct => {
+      if (!oneProduct) {
         res.status(404).json({ message: 'No product found with this id'});
         return;
       }
-      res.json(productData);
+      res.json(oneProduct);
     })
     .catch(err => {
       console.log(err);
@@ -93,7 +94,7 @@ router.post('/', (req, res) => {
     }
   */
   Product.create({
-    product_name: req.body.product_name,
+    product_name: req.body.name,
     price: req.body.price,
     stock: req.body.stock,
     tagIds: req.body.tagIds
@@ -122,14 +123,31 @@ router.post('/', (req, res) => {
 // update product
 router.put('/:id', (req, res) => {
   // update product data
-  Product.update(req.body, {
-    where: {
-      id: req.params.id,
+  Product.update(
+    {
+      product_name: req.body.name,
+      price: req.body.price,
+      stock: req.body.stock,
+      tagIds: req.body.tagIds
+    },
+    {   
+      where: {
+        id: req.params.id
     },
   })
-    .then((product) => {
+    .then((productUpdate) => {
+      console.log(productUpdate);
+    })
+    .catch(err => {
+      console.log(err);
+    
       // find all associated tags from ProductTag
-      return ProductTag.findAll({ where: { product_id: req.params.id } });
+      return ProductTag.findAll(
+        { 
+          where: { 
+            product_id: req.params.id 
+          } 
+        });
     })
     .then((productTags) => {
       // get list of current tag_ids
@@ -169,12 +187,12 @@ router.delete('/:id', (req, res) => {
       id: req.params.id
     }
   })
-  .then(productData => {
-    if (!productData) {
+  .then(deleteProduct => {
+    if (!deleteProduct) {
       res.status(404).json({ message: 'No product found with this id'});
       return;
     }
-    res.json(productData);
+    res.json(deleteProduct);
   })
   .catch(err => {
     console.log(err);
