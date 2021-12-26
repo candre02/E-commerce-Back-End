@@ -3,6 +3,26 @@
     "dotenv": "^10.0.0",
     "express": "^4.17.1",
     "mysql": "^2.18.1",
-    "sequelize": "^6.12.0-beta.1"
-  }
+    "mysql2": "^2.3.3",
+    "sequelize": "^6.12.0"
+  },
+  "scripts": {
+    "start": "node server.js",
+    "seed": "node seeds/index.js"
+  },
+  "name": "digital-tradebend",
+  "description": "",
+  "version": "1.0.0",
+  "main": "server.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/candre02/digital-TradeBEnd.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/candre02/digital-TradeBEnd/issues"
+  },
+  "homepage": "https://github.com/candre02/digital-TradeBEnd#readme"
 }

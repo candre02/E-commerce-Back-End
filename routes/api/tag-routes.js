@@ -13,12 +13,9 @@ router.get('/', (req, res) => {
     ],
     include: [
       {
-        model: ProductTag,
-        attributes: ['id', 'product_id', 'tag_id'],
-        include: {
           model: Product,
+          through: ProductTag,
           attributes: ['id', 'product_name', 'price', 'stock', 'category_id']
-        }
       }
     ]
   })
@@ -42,19 +39,16 @@ router.get('/:id', (req, res) => {
     ],
     include: [
       {
-        model: ProductTag,
-        attributes: ['id', 'product_id', 'tag_id'],
-        include: {
           model: Product,
+          through: ProductTag,
           attributes: [
-            'id',
-            'product_name',
-            'price',
-            'stock',
+            'id', 
+            'product_name', 
+            'price', 
+            'stock', 
             'category_id'
-          ]
-        }
-      },
+          ] 
+      }
     ]
   })
   .then(oneTag => {
@@ -72,12 +66,7 @@ router.get('/:id', (req, res) => {
 router.post('/', (req, res) => {
   // create a new tag
   Tag.create({
-    // username:
-    username: req.body.username,
-    // email:
-    email: req.body.email,
-    // password:
-    password: req.body.password
+    tag_name: req.body.tag_name
   })
   .then(createTag => res.json(createTag))
   .catch(err => {
@@ -89,13 +78,12 @@ router.post('/', (req, res) => {
 router.put('/:id', (req, res) => {
   // update a tag's name by its `id` value
   Tag.update({
+    tag_name: req.body.tag_name
+  },
+  {
     where: {
       id: req.params.id
-    },
-    // attributes: [
-    //   'id',
-    //   'tag_name'
-    // ]
+    }
   })
   .then(updateTag => {
     if (!updateTag) {
@@ -103,6 +91,7 @@ router.put('/:id', (req, res) => {
       return;
     }
     console.log(updateTag);
+    res.json(updateTag);
   })
   .catch(err => {
     console.log(err);

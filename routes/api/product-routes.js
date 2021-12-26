@@ -15,21 +15,17 @@ router.get('/', (req, res) => {
       'price',
       'stock',
       'category_id',
-      [sequelize.literal('(SELECT ')]
     ],
     include: [
       {
         model: Category,
         attributes: ['id', 'category_name'],
-        include: {
-          model: Tag,
-          attributes: ['id', 'tag_name']
-        }
       },
       {
-        model: ProductTag,
-        attributes: ['id', 'product_id', 'tag_id']
-      }
+          model: Tag,
+          through: ProductTag,
+          attributes: ['id', 'tag_name']
+        }
     ]
   })
     .then(allProduct => res.json(allProduct))
@@ -52,18 +48,18 @@ router.get('/:id', (req, res) => {
       'product_name',
       'price',
       'stock',
-      'category_id',
-      []
+      'category_id'
     ],
     include: [
       {
         model: Category,
         attributes: ['id', 'category_name'],
-        include: {
+      },
+      {
           model: Tag,
+          through: ProductTag,
           attributes: ['id', 'tag_name']
         }
-      },
     ]
   })
     .then(oneProduct => {
@@ -90,7 +86,7 @@ router.post('/', (req, res) => {
     }
   */
   Product.create({
-    product_name: req.body.name,
+    product_name: req.body.product_name,
     price: req.body.price,
     stock: req.body.stock,
     tagIds: req.body.tagIds
@@ -121,7 +117,7 @@ router.put('/:id', (req, res) => {
   // update product data
   Product.update(
     {
-      product_name: req.body.name,
+      product_name: req.body.product_name,
       price: req.body.price,
       stock: req.body.stock,
       tagIds: req.body.tagIds

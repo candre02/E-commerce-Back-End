@@ -40,8 +40,7 @@ router.get('/:id', (req, res) => {
     },
     attributes: [
       'id',
-      'category_name',
-      []
+      'category_name'
     ],
     include: [
       {
@@ -57,25 +56,26 @@ router.get('/:id', (req, res) => {
     ]
   })
     .then(oneCategory => {
-      if (oneCategory) {
+      if (!oneCategory) {
         res.status(404).json({ message: 'No category found with this id'});
         return;
       }
       res.json(oneCategory);
     })
-    .catch(err => {
-      console.log(err);
-      res.status(500).json(err);
-    });
+    // .catch(err => {
+    //   console.log(err);
+    //   res.status(500).json(err);
+    // });
 });
 
 router.post('/', (req, res) => {
   // create a new category
   Category.create({
-    category_name: req.body.name
+    category_name: req.body.category_name
   })
     .then((newCategory) => {
       console.log(newCategory);
+      res.json(newCategory);
     })
     .catch(err => {
       console.log(err);
@@ -87,16 +87,17 @@ router.put('/:id', (req, res) => {
   Category.update(
     {
       // all the felds you can update and the data attached to the request body
-      category_name: req.body.name
+      category_name: req.body.category_name
     },
     {
       // Get a category based on the category_id given in the request parameters
     where: {
       id: req.params.id
-    },
+    }
   })
     .then((updatedCategory) => {
       console.log(updatedCategory);
+      res.json(updatedCategory);
     })
     .catch(err => {
       console.log(err);
