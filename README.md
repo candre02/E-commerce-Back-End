@@ -19,5 +19,5 @@ In order for the application to be used, the user would need the command-line, m
 To any perform tests, the user would need insomnia to check if all the routes functionality work properly.
 
 # Contact
-* Github: candre02
-* Email: candre02.2@gmail.com
+* * [candre02](https://www.github.com/candre02)
+
