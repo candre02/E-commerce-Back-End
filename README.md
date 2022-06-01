@@ -18,6 +18,9 @@ In order for the application to be used, the user would need the command-line, m
 ## Tests
 To any perform tests, the user would need insomnia to check if all the routes functionality work properly.
 
+### Images
+![digitaltradepic](https://user-images.githubusercontent.com/81876258/171506747-66700d79-e60d-4e3d-8707-b4b371ca5eb9.png)
+
 # Contact
-* * [candre02](https://www.github.com/candre02)
+* [candre02](https://www.github.com/candre02)
 
